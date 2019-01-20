@@ -1,6 +1,11 @@
 require 'active_record'
 require 'sinatra'
 require 'rake'
+require 'sinatra-activerecord'
+require 'sinatra-flash'
+require 'pg'
+
+
 
 class User < ActiveRecord::Base
   has_many :posts
