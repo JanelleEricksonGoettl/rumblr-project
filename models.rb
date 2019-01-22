@@ -1,18 +1,20 @@
 require 'sinatra/activerecord'
 require 'pg'
 
-set :database, 'postgresql:rumblr'
-
-# enable :sessions
+# set :database, 'postgresql:rumblr'
 
 ### Environments ###
-# configure :development do
-#   set :database, ###
-# end
+#dn local machine
+configure :development do
+  #dn sets the directory to this project file 'rumblr'
+  set :database, 'postgresql:rumblr'
+end
 
-# configure :production do
-#   set :database, ### ENV["DATABASE_URL"]
-# end
+#dn on heroku
+configure :production do
+  #dn sets the directory to an Env variable on heroku via 'settings'
+  set :database, ENV['DATABASE_URL']
+end
 
 # ### 
 # class User < ActiveRecord::Base
