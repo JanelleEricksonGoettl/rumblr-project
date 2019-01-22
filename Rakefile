@@ -1,2 +1,2 @@
 require 'sinatra/activerecord/rake'
-require 'models'
+require_relative 'app'
