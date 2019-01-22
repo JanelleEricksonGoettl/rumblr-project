@@ -1,8 +1,6 @@
 require 'sinatra/activerecord'
 require 'pg'
 
-# set :database, 'postgresql:rumblr'
-
 ### Environments ###
 #dn local machine
 configure :development do
@@ -23,5 +21,4 @@ end
 
 class Post < ActiveRecord::Base
   belongs_to :user
-
 end
