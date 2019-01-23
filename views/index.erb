@@ -1,23 +1,17 @@
 <h1>Humblr</h1>
 
 <!--  --> 
-<% if session[:user] != nil %>
+<% if session[:user] == nil %>
   <h2>Sign Up</h2>
-  <%= erb :signup %>
+  <%= erb :sign_up %>
 
   <p>OR</p>
 
   <h2>Log In</h2>
-  <form action="/log_in" method="post">
-    Enter Username:  <br>
-    <input type="text" name="username" placeholder="Username"> <br>
-    Enter Password:  <br>
-    <input type="password" name="password" placeholder="Password"> <br>
-    <input type="submit" value="Log In">
-  </form>
+  <%= erb :log_in %>
 <% end %>
 
-<% if session[:user] == nil %>
+<% if session[:user] != nil %>
   <% #erb :dashboard %> 
 
   <% erb :log_out %>
