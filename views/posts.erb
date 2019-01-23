@@ -1,4 +1,14 @@
-<% Post.all.each do |post| %>
-  <h2 id="feed-header"><%= post.title %></h2>
-  <p id="feedpara"><%= post.content %></p>
-<% end %>
+<div class="col-md-8 px-3">
+  <div class="card-block px-3">
+    <h4 class="card-title">
+      <a href="/user/<%= post.user_id %>/posts/<%= post.id %>"><%= post.title %></a>
+    </h4>
+    <h5 class="card-text">
+      <a href="/user/<%= post.user_id %>/posts">
+        <%= post.user.firstname %> <%= post.user.lastname %>
+      </a>
+    </h5>
+    <h6 class="card-text"><%= post.datetime.strftime("%B %d, %Y") %>, <%= post.datetime.strftime("%I:%M%p") %> UTC</h6>
+    <p class="card-text card-content"><%= post.content %></p>
+  </div>
+</div>

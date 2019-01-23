@@ -44,6 +44,19 @@ end
 
 ### Post routes ###
 
+#dn TEST
+get '/user/:id/posts' do
+  begin
+    @user = User.find(params[:id])
+    @posts = @user.posts.order(datetime: :desc).limit(20).offset(params[:page])
+    # @paginate = @posts.paginate(:page => params[:page], :per_page => 20)
+  rescue
+    flash[:warning] = 'This user has no posts!'
+    redirect '/'
+  end
+  erb :posts
+end
+
 # get "/new_post" do
 #   if session[:user_id] == true
 #     erb :new_post
@@ -83,9 +96,9 @@ post "/sign_up" do
 end
 
 #dn NEEDED?
-get "/log_in" do
+post "/log_in" do
 
-  erb :index
+  # erb :index
 end
 
 # post "/log_out" do
