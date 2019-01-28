@@ -5,47 +5,67 @@ require_relative 'models'
 set :sessions, true
 
 ### Global routes ###
-get "/" do
+get '/' do
   erb :index
 end
 
-#dn display user's last 20 posts based on user_id
-# get "/users/:id" do
-#   @user = User.find(params["id"])
-#   #dn set the erb file once created
-#     # figure out how to set to display last 20 posts
-# end
-
-# get "/posts/:id" do
-#   @post = Post.find(params["id"])
-#   #dn set @posts = Post.all later
-# end
-
 ### User routes ###
 
-#dn dashboard
-get "/dashboard" do
-  if session[:user_id] != nil
-  erb :dashboard
-  else
-    # flash[:warning] = 'Oops!'
-    redirect '/'
-  end
+#dn Users INDEX
+get '/users' do
+  @users = User.all
+end
+#dn Users SHOW
+get '/users/:id' do
+  @user = User.find(params[:id])
+  #dn set the erb file once created
+    # figure out how to set to display last 20 posts
+end
+#dn Users NEW
+get '/users/new' do
+  erb :log_in
+end
+#dn Users EDIT
+get '/users/edit' do
+
 end
 
-# get "/profile" do
-#   if session[:user_id] == true
-#     erb :index
-#   else
-#     # flash[:warning] = 'Oops!'
-#     redirect '/' #signup'
-#   end
-# end
+#dn Users CREATE
+post '/users' do
+  @user = User.create(
+    first_name: params[:first_name],
+    last_name: params[:last_name],
+    password: params[:password],
+    email: params[:email],
+    dob: params[:dob]
+  )
+  @user.save
+  session[:user_id] = @user.id
+  # figure out a flash message for successful post
+  redirect '/dashboard'
+end
+#dn Users UPDATE
+put '/users/:id' do
+
+end
+#dn Users DESTROY
+delete '/users/:id' do
+  erb :log_out
+end
+
+
+
+get '/posts/:id' do
+  @post = Post.find(params[:id])
+  #dn set @posts = Post.all later
+end
+
+
 
 ### Post routes ###
 
-#dn TEST
-get '/user/:id/posts' do
+#dn Posts INDEX
+get '/users/:id/posts/' do
   begin
     @user = User.find(params[:id])
     @posts = @user.posts.order(datetime: :desc).limit(20).offset(params[:page])
@@ -57,59 +77,25 @@ get '/user/:id/posts' do
   erb :posts
 end
 
-# get "/new_post" do
-#   if session[:user_id] == true
-#     erb :new_post
-#   else
-#     # flash[:warning] = 'Oops!'
-#     redirect '/' #signup'
-#   end
-# end
+#dn Posts SHOW
+get '/users/:id/posts/:id' do
 
-# post "/new_post" do
-#   @new_post = Post.create(
-#     post_title: params[:post_title],
-#     post_content: params[:post_content]
-#   )
-#   @new_post.save
-#   redirect "/posts/#{@new_post.id}" # or /dashboard?
-# end
+end
+#dn Posts NEW
+get "/users/:id/posts/new" do
 
-
-#dn logout TEST THIS
-# get "/sign_up" do
-#   erb :dashboard
-# end
-
-post "/sign_up" do
-  @user = User.create(
-    first_name: params[:first_name],
-    last_name: params[:last_name],
-    password: params[:password],
-    email: params[:email],
-    dob: params[:dob]
-  )
-  @user.save
-  session[:user_id] = @user.id
-  # figure out a flash message for successful post
-  redirect "/dashboard"
+end
+#dn Posts EDIT
+get '/users/:id/posts/:id/edit' do
 end
 
-#dn NEEDED?
-post "/log_in" do
-
-  # erb :index
+#dn Posts CREATE
+post '/users/:id/posts/new' do
 end
-
-# post "/log_out" do
-#   session['user_id'] = nil
-#   puts session
-#   redirect "/"
-# end
-
-#dn DELETE account
-# delete "/profile" do
-#   User.find(session[:user_id]).destroy
-#   session[:user_id] = nil
-#   redirect '/'
-# end 
+#dn Posts UPDATE
+put '/users/:id/posts/:id' do
+end
+#dn Posts DELETE
+delete '/users/:id/posts/:id' do
+  #DESTROY
+end
