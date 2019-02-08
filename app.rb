@@ -7,8 +7,7 @@ set :sessions, true
 
 ### Global routes ###
 get '/' do
-  
-  erb :index #, locals: { current_user: current_user }
+  erb :index
 end
 
 ### User routes ###
@@ -16,7 +15,6 @@ post '/sign_up' do
   @user = User.create(
     first_name: params[:first_name],
     last_name: params[:last_name],
-    # full_name: params[:first_name][:last_name],
     password_hash: params[:password_hash],
     email: params[:email],
     dob: params[:dob]
@@ -38,6 +36,12 @@ post '/log_in' do
   else
     redirect "/"
   end
+end
+
+post '/log_out' do
+  session[:user_id] = nil
+
+  redirect "/"
 end
 
 #dn Users INDEX
@@ -67,7 +71,6 @@ end
 get '/new_post' do
   erb :new_post
 end
-
 
 get '/posts/:id' do
   @post = Post.find(params[:id])
