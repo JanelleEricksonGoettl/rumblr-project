@@ -1,101 +1,92 @@
 require 'sinatra'
+require 'sinatra/flash'
 require_relative 'models'
 
 #dn enables cookies
 set :sessions, true
 
+# def current_user
+#   @user ||= User.find(session[:user_id])
+# end
+
 ### Global routes ###
 get '/' do
-  erb :index
+  
+  erb :index #, locals: { current_user: current_user }
 end
 
 ### User routes ###
-
-#dn Users INDEX
-get '/users' do
-  @users = User.all
-end
-#dn Users SHOW
-get '/users/:id' do
-  @user = User.find(params[:id])
-  #dn set the erb file once created
-    # figure out how to set to display last 20 posts
-end
-#dn Users NEW
-get '/users/new' do
-  erb :log_in
-end
-#dn Users EDIT
-get '/users/edit' do
-
-end
-
-#dn Users CREATE
-post '/users' do
+post '/sign_up' do
   @user = User.create(
     first_name: params[:first_name],
     last_name: params[:last_name],
-    password: params[:password],
+    # full_name: params[:first_name][:last_name],
+    password_hash: params[:password_hash],
     email: params[:email],
     dob: params[:dob]
   )
   @user.save
   session[:user_id] = @user.id
-  # figure out a flash message for successful post
-  redirect '/dashboard'
-end
-#dn Users UPDATE
-put '/users/:id' do
 
-end
-#dn Users DESTROY
-delete '/users/:id' do
-  erb :log_out
+  redirect "/"
 end
 
+post '/log_in' do
+  puts params
+  @user = User.find_by(email: params[:email])
+  puts @user
+  if @user.password_hash == params[:password_hash]
+    session[:user_id] = @user.id
 
-
-get '/posts/:id' do
-  @post = Post.find(params[:id])
-  #dn set @posts = Post.all later
-end
-
-
-
-### Post routes ###
-
-#dn Posts INDEX
-get '/users/:id/posts/' do
-  begin
-    @user = User.find(params[:id])
-    @posts = @user.posts.order(datetime: :desc).limit(20).offset(params[:page])
-    # @paginate = @posts.paginate(:page => params[:page], :per_page => 20)
-  rescue
-    flash[:warning] = 'This user has no posts!'
-    redirect '/'
+    redirect "/users/#{@user.id}'"
+  else
+    redirect "/"
   end
-  erb :posts
+end
+
+#dn Users INDEX
+get '/users' do
+  @users = User.all
+end
+
+#dn Users SHOW
+get '/users/:id' do
+  @user = User.find(params[:id])
+  erb :user_show
 end
 
 #dn Posts SHOW
-get '/users/:id/posts/:id' do
+# get '/users/:id/posts' do
+#   @user = User.find(params[:id])
+#   @posts = @user.posts.order(datetime: :desc).limit(20)
+# end
 
-end
-#dn Posts NEW
-get "/users/:id/posts/new" do
-
-end
-#dn Posts EDIT
-get '/users/:id/posts/:id/edit' do
+get '/new_post' do
+  erb :new_post
 end
 
-#dn Posts CREATE
-post '/users/:id/posts/new' do
+get '/posts/:id' do
+  @user = User.find_by(user_id: params[:user_id])
+  @posts = Post.find_by()
+  erb :posts
 end
-#dn Posts UPDATE
-put '/users/:id/posts/:id' do
+
+get '/posts' do
+  @posts = Post.all
+  erb :posts
 end
-#dn Posts DELETE
-delete '/users/:id/posts/:id' do
-  #DESTROY
+
+post '/post' do
+  # @user = User.find_by(email: params[:email])
+  @post = Post.create(
+    title: params[:title],
+    content: params[:content],
+    user_id: current_user.id,
+    datetime: Time.now.utc
+  )
+  post.save
+
+  redirect "/dashboard" #"/users/#{@user.id}"
 end
+
+

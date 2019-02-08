@@ -1,6 +1,6 @@
 require 'sinatra/activerecord'
 require 'pg'
-require 'bcrypt'
+# require 'bcrypt'
 
 ### Environments ###
 #dn local machine
@@ -19,16 +19,16 @@ end
 class User < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
 
-  include BCrypt
+  # include BCrypt
 
-  def password
-    @password ||= Password.new(password_hash)
-  end
+  # def password
+  #   @password ||= Password.new(password_hash)
+  # end
 
-  def password=(new_password)
-    @password = Password.create(new_password)
-    self.password_hash = @password
-  end
+  # def password=(new_password)
+  #   @password = Password.create(new_password)
+  #   self.password_hash = @password
+  # end
 end
 
 class Post < ActiveRecord::Base

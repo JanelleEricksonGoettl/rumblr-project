@@ -9,16 +9,3 @@
   <%= erb :log_in %>
 <% end %>
 
-<% if session[:user] != nil %>
-  <% #erb :dashboard %> 
-
-  <% erb :log_out %>
-  <form action="/log_out" method="post">
-    <input type="submit" value="Log Out">
-  </form>
-
-  <% #erb :new_post %> 
-  <h3>Post</h3>
-  <% erb :posts %>
-
-<% end %>

@@ -2,7 +2,7 @@ require_relative '../models'
 
 User.create(
   email: 'juno@gmail.com',
-  password: 'pw',
+  password_hash: 'pw',
   first_name: 'Juno',
   last_name: 'Tempest',
   dob: '02/03/1987'
@@ -10,7 +10,7 @@ User.create(
 
 User.create(
   email: 'zero@gmail.com',
-  password: 'one',
+  password_hash: 'one',
   first_name: 'Zee',
   last_name: 'Eins',
   dob: '07/13/1998'
@@ -18,7 +18,7 @@ User.create(
 
 User.create(
   email: 'janelle@gmail.com',
-  password: 'eg',
+  password_hash: 'eg',
   first_name: 'Janelle',
   last_name: 'Erickson',
   dob: '03/02/1995'
