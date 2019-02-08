@@ -5,10 +5,6 @@ require_relative 'models'
 #dn enables cookies
 set :sessions, true
 
-# def current_user
-#   @user ||= User.find(session[:user_id])
-# end
-
 ### Global routes ###
 get '/' do
   
@@ -28,7 +24,7 @@ post '/sign_up' do
   @user.save
   session[:user_id] = @user.id
 
-  redirect "/"
+  redirect "/users/#{@user.id}"
 end
 
 post '/log_in' do
@@ -38,7 +34,7 @@ post '/log_in' do
   if @user.password_hash == params[:password_hash]
     session[:user_id] = @user.id
 
-    redirect "/users/#{@user.id}'"
+    redirect "/users/#{@user.id}"
   else
     redirect "/"
   end
@@ -52,22 +48,29 @@ end
 #dn Users SHOW
 get '/users/:id' do
   @user = User.find(params[:id])
+  @posts = Post.all
   erb :user_show
 end
 
-#dn Posts SHOW
-# get '/users/:id/posts' do
-#   @user = User.find(params[:id])
-#   @posts = @user.posts.order(datetime: :desc).limit(20)
-# end
+post '/new_post' do
+  @user = User.find(session[:user_id])
+  @post = Post.create(
+    title: params[:title],
+    content: params[:content],
+    user_id: session[:user_id]
+  )
+  @post.save
+
+  redirect "/users/#{@user.id}"
+end
 
 get '/new_post' do
   erb :new_post
 end
 
+
 get '/posts/:id' do
-  @user = User.find_by(user_id: params[:user_id])
-  @posts = Post.find_by()
+  @post = Post.find(params[:id])
   erb :posts
 end
 
@@ -75,18 +78,3 @@ get '/posts' do
   @posts = Post.all
   erb :posts
 end
-
-post '/post' do
-  # @user = User.find_by(email: params[:email])
-  @post = Post.create(
-    title: params[:title],
-    content: params[:content],
-    user_id: current_user.id,
-    datetime: Time.now.utc
-  )
-  post.save
-
-  redirect "/dashboard" #"/users/#{@user.id}"
-end
-
-
