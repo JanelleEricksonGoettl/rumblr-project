@@ -1,11 +1,26 @@
 
-<h4> Hey <%= @user.first_name %> </h4>
+<h4 class="pt-4"> Oh, hello, <%= @user.first_name %> </h4>
 
-<div>
-  User Information Here
+<%= erb :user_nav %>
+
+<div class="card" style="width: auto;">
+  <div class="card-body">
+    <h5 class="card-title">Your Profile</h5>
+
+    <div class="card-text">
+      <p><strong> Name: </strong></p> 
+      <p> <%= @user.first_name %> <%= @user.last_name %></p>
+      <p><strong> Email: </strong></p> 
+      <p> <%= @user.email %> </p>
+      <p><strong> Birthday: </strong></p> 
+      <p> <%= @user.dob %> </p>
+      <p><strong> Member Since: </strong></p> 
+      <p> <%= @user.created_at %> </p>
+    </div>
+  </div>
 </div>
 
-<form action="/profile" method="delete">
-  <button>Delete Account</button>
+<form action="/delete" method="post">
+  <input class="btn btn-danger btn-lg btn-block" type="submit" value="Delete Account">
 </form>
 

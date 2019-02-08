@@ -26,20 +26,32 @@ post '/sign_up' do
 end
 
 post '/log_in' do
-  puts params
   @user = User.find_by(email: params[:email])
-  puts @user
   if @user.password_hash == params[:password_hash]
     session[:user_id] = @user.id
 
     redirect "/users/#{@user.id}"
   else
+    params[:password_hash] == false || nil
+
     redirect "/"
   end
 end
 
 post '/log_out' do
   session[:user_id] = nil
+
+  redirect "/"
+end
+
+get '/profile' do
+  @user = User.find(session[:user_id])
+  erb :profile
+end
+
+post '/delete' do
+  @user = User.find(session[:user_id])
+  @user.destroy
 
   redirect "/"
 end
@@ -52,7 +64,7 @@ end
 #dn Users SHOW
 get '/users/:id' do
   @user = User.find(params[:id])
-  @posts = Post.all
+  @posts = Post.all.limit(20)
   erb :user_show
 end
 
@@ -78,6 +90,6 @@ get '/posts/:id' do
 end
 
 get '/posts' do
-  @posts = Post.all
+  @posts = Post.all.limit(20)
   erb :posts
 end
