@@ -2,16 +2,16 @@
 
 <% @posts.each do |post| %>
 
-<div class="card" style="width: auto;">
-  <div class="card-body">
-    <h5 class="card-title"><%= post.title %></h5>
+  <div class="card" style="width: auto;">
+    <div class="card-body">
+      <h5 class="card-title"><%= post.title %></h5>
 
-    <div class="card-text">
-      <p><%= post.content %></p>
+      <div class="card-text">
+        <p><%= post.content %></p>
+      </div>
+
+      <footer class="blockquote-footer"><%= post.created_at %></footer>
     </div>
-
-    <footer class="blockquote-footer"><%= post.created_at %></footer>
   </div>
-</div>
 
 <% end %>

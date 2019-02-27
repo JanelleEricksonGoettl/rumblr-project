@@ -59,12 +59,14 @@ end
 #dn Users INDEX
 get '/users' do
   @users = User.all
+  @post = Post.last
+  erb :users
 end
 
 #dn Users SHOW
 get '/users/:id' do
   @user = User.find(params[:id])
-  @posts = Post.all.limit(20)
+  @posts = Post.all.limit(20).reverse
   erb :user_show
 end
 
@@ -90,6 +92,6 @@ get '/posts/:id' do
 end
 
 get '/posts' do
-  @posts = Post.all.limit(20)
+  @posts = Post.all.limit(20).reverse
   erb :posts
 end
