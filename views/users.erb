@@ -1,0 +1,18 @@
+<h4 class="pt-4"> Humble Moments </h4>
+
+<%= erb :user_nav %>
+
+<% @users.each do |user| %>
+  <div class="card" style="width: auto;">
+    <div class="card-body">
+      <h5 class="card-title"><a href="/users/<%= user.id %>"><%= user.first_name %></a></h5>
+
+      <div class="card-text">
+        <h6><%= @post.title %></h6>
+        <p><%= @post.content %></p>
+      </div>
+
+      <footer class="blockquote-footer"><%= @post.created_at %></footer>
+    </div>
+  </div>
+<% end %>
